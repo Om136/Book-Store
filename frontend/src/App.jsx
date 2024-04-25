@@ -5,7 +5,6 @@ import Books from "./pages/Books.jsx";
 import Add from "./pages/Add.jsx";
 import Update from "./pages/Update.jsx";
 import Home from "./pages/Home";
-import { FilterProvider } from "../context/filterContext.js";
 
 function App() {
   return (

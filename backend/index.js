@@ -14,31 +14,46 @@ const db = mysql.createConnection({
   database: "dbmslab",
 });
 
-app.listen(5000, () => console.log("server started"));
+app.listen(5001, () => console.log("server started"));
 
 app.get("/", (req, res) => res.json("Hello World"));
 app.get("/books", (req, res) => {
   const filter = req.query.filter;
+  const data = req.query.search;
   switch (filter) {
     case "all":
       var q = "SELECT * FROM books";
       break;
     case "title":
-      var q = `SELECT * FROM books WHERE title=`;
+      var q = `SELECT * FROM books WHERE title= ?`;
       break;
-    case "Out of Stock":
-      var q = "SELECT * FROM books WHERE stock=0";
+    case "price":
+      var q = "SELECT * FROM books WHERE price=?";
+    case "category":
+      var q = "SELECT * FROM books WHERE category=?";
       break;
     default:
       var q = "SELECT * FROM books";
   }
-  db.query(q, (error, data) => {
-    if (error) {
-      res.json(error);
-    } else {
-      res.json(data);
-    }
-  });
+  if (filter==='all'){
+    db.query(q, (error, data) => {
+      if (error) {
+        res.json(error);
+      } else {
+        res.json(data);
+      }
+    });
+  }
+  else{
+    db.query(q, data, (error, data) => {
+      if (error) {
+        res.json(error);
+      } else {
+        res.json(data);
+      }
+    });
+  }
+  
 });
 app.post("/books", (req, res) => {
   const q =
@@ -87,6 +102,16 @@ app.put("/books/:id", (req, res) => {
       res.json(err);
     } else {
       res.json("book deleted successfully");
+    }
+  });
+});
+app.get("/orders", (req, res) => {
+  const q = "SELECT * FROM order_book_info";
+  db.query(q, (err, data = []) => {
+    if (err) {
+      res.json(err);
+    } else {
+      res.json(data);
     }
   });
 });

@@ -9,12 +9,16 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
-import { useFilter } from "../context/filterContext.js";
+// import { useFilter } from "../context/FilterContext.js";
 
 function Books() {
-  const { filter, setFilter, page, postsPerPage, books, setPage, setBooks } =
-    useFilter();
-
+  // const { filter, setFilter, page, postsPerPage, books, setPage, setBooks } =
+  //   useFilter();
+  const [filter, setFilter] = useState("All");
+  const [filterData, setFilterData] = useState("");
+  const [books, setBooks] = useState([]);
+  const [page, setPage] = useState(1);
+  const [postsPerPage, setPostPerPage] = useState(10);
   const lastPostIndex = page * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = books.slice(firstPostIndex, lastPostIndex);
@@ -29,11 +33,15 @@ function Books() {
     if (page === maxPage) return;
     setPage((prev) => prev + 1);
   };
+
+  const handleSearch = (e) => {
+    setFilterData(e.target.value);
+  };
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/books?filter=" + filter
+          "http://localhost:5001/books?filter=" + filter+"&search="+filterData
         );
         console.log(res.data);
         setBooks(res.data);
@@ -42,7 +50,7 @@ function Books() {
       }
     };
     fetchBooks();
-  }, [filter, setBooks]);
+  }, [filter, setBooks, filterData]);
   return (
     <div className=" ">
       <div className=" flex justify-center h-[75vh] ">
@@ -58,7 +66,7 @@ function Books() {
             ))}
         </div>
 
-        <div className=" mr-3 mt-16 flex justify-center  ">
+        <div className=" mr-3 mt-16 flex justify-center items-start gap-3  ">
           <Dropdown>
             <DropdownTrigger>
               <Button
@@ -78,6 +86,12 @@ function Books() {
               <DropdownItem key="category">category</DropdownItem>
             </DropdownMenu>
           </Dropdown>
+          <input
+            className="h-9 border rounded-xl text-black"
+            type="text"
+            value={filterData}
+            onChange={handleSearch}
+          />
         </div>
       </div>
 

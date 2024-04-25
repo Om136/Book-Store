@@ -2,19 +2,13 @@
 import { Children, createContext, useContext, useState } from "react";
 const FilterContext = createContext();
 function FilterProvider() {
-  const [filter, setFilter] = useState("All");
-  const [filterData, setFilterData] = useState("");
-  const [books, setBooks] = useState([]);
-  const [page, setPage] = useState(1);
-  const [postsPerPage, setPostPerPage] = useState(10);
-
 
 
   return (
     <FilterContext.Provider
       value={{
         filter,
-       filterData,
+        filterData,
         books,
         page,
         postsPerPage,
@@ -29,9 +23,9 @@ function FilterProvider() {
     </FilterContext.Provider>
   );
 }
-function useFilter(){
-    const context = useContext(FilterContext);
-
+function useFilter() {
+  const context = useContext(FilterContext);
+  return context;
 }
 
-export {FilterProvider,useFilter};
+export { FilterProvider, useFilter };

@@ -1,13 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Nav from "../component/Nav";
+// import { FilterProvider } from "./context/FilterContext.js";
+
 
 function Home() {
   return (
     <div className="">
-      <FilterProvider>
+      {/* <FilterProvider> */}
         <Nav />
         <Outlet />
-      </FilterProvider>
+      {/* </FilterProvider> */}
     </div>
   );
 }

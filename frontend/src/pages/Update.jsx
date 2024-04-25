@@ -23,7 +23,7 @@ function Update() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const addedBook = await axios.put("http://localhost:5000/books/"+location.pathname.split("/")[2], books);
+    const addedBook = await axios.put("http://localhost:5001/books/"+location.pathname.split("/")[2], books);
     console.log(addedBook.data);
     navigate("/books");
   };
